@@ -43,8 +43,7 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 	
 	Pane firstPane = new Pane();
 	
-	public void start(Stage primaryStage) {
-		System.out.println("Hello World!");
+	public void start(Stage primaryStage) 
 		Stage firstStage = new Stage();
 		Scene scene = new Scene(firstPane,500,500);
 		firstStage.setScene(scene);
