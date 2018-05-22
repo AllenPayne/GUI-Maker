@@ -34,7 +34,8 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 	int taCounter = 0;
 	
 	Button createButton = new Button();
-	Button[] bArray = new Button[10];
+	//Button[] bArray = new Button[10];
+	List<Button> bArray = new ArrayList<Button>();
 	int bCounter = 0;
 	
 	Button submit = new Button();
@@ -82,40 +83,54 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 			taCounter++;
 		}
 		if(e.getSource().equals(createButton)) {
-			bArray[bCounter] = new Button();
+			/*bArray[bCounter] = new Button();
 			bArray[bCounter].setOnMousePressed(nodeOnMousePressedHandler);
 			bArray[bCounter].setOnMouseDragged(nodeOnMouseDraggedHandler);
 			bArray[bCounter].setLayoutX(250);
-			bArray[bCounter].setLayoutY(250);
-			firstPane.getChildren().add(bArray[bCounter]);
+			bArray[bCounter].setLayoutY(250);*/
+			bArray.add(new Button());
+			bArray.get(bCounter).setOnMousePressed(nodeOnMousePressedHandler);
+			bArray.get(bCounter).setOnMouseDragged(nodeOnMouseDraggedHandler);
+			bArray.get(bCounter).setLayoutX(250);
+			bArray.get(bCounter).setLayoutY(250);
+			firstPane.getChildren().add(bArray.get(bCounter));
 			bCounter++;
 		}
 		if(e.getSource().equals(submit)) {
 			for(TextField a : tfArray) {
-				int counter = 0;
 				tfXCoordinates.add(a.getLayoutX());
 				tfYCoordinates.add(a.getLayoutY());
-				counter++;
 			}
 			for(Button b : bArray) {
-				int counter = 0;
-				//bXCoordinates[counter] = b.getLayoutX();
-				//bYCoordinates[counter] = b.getLayoutY();
-				counter++;
+				bXCoordinates.add(b.getLayoutX());
+				bYCoordinates.add(b.getLayoutY());
 			}
 			generateCode();
 		}
 	}
 	public void generateCode() {
+		int textFieldCount = 0;
+		int buttonCount = 0;
+		int textAreaCount = 0;
 		for(TextField a : tfArray) {
-			int counter = 0;
 			System.out.println("TextField " + "name " + " = new TextField();"); //replace name with a variable name that makes sense later
-			double x = tfXCoordinates.get(counter);
-			double y = tfYCoordinates.get(counter);
+			double x = tfXCoordinates.get(textFieldCount);
+			double y = tfYCoordinates.get(textFieldCount);
 			Double.toString(x);
 			Double.toString(y);
 			System.out.println("name.setLayoutX("+ (int)x + ");");
 			System.out.println("name.setLayoutY("+ (int)y + ");");
+			textFieldCount++;
+		}
+		for(Button b : bArray) {
+			System.out.println("Button " + "name " + " = new Button();"); //replace name with variable names from user
+			double x = bXCoordinates.get(buttonCount);
+			double y = bYCoordinates.get(buttonCount);
+			Double.toString(x);
+			Double.toString(y);
+			System.out.println("name"+ ".setLayoutX(" + (int)x +");");
+			System.out.println("name"+ ".setLayoutY(" + (int)y +");");
+			buttonCount++;
 		}
 	}
 	EventHandler<MouseEvent> nodeOnMousePressedHandler = new EventHandler<MouseEvent>() {
