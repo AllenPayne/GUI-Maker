@@ -1,8 +1,7 @@
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.scene.Node;
@@ -21,13 +20,13 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 	double orgSceneX, orgSceneY;
 	double orgTranslateX, orgTranslateY;
 	
-	double[] tfXCoordinates = new double[10];
-	double[] tfYCoordinates = new double[10];
-	double[] bXCoordinates = new double[10];
-	double[] bYCoordinates = new double[10];
+	List<Double> tfXCoordinates = new ArrayList<Double>();
+	List<Double> tfYCoordinates = new ArrayList<Double>();
+	List<Double> bXCoordinates = new ArrayList<Double>();
+	List<Double> bYCoordinates = new ArrayList<Double>();
 	
 	Button createTextField = new Button();
-	TextField[] tfArray = new TextField[10]; // make these statements expandable
+	List<TextField> tfArray = new ArrayList<TextField>();
 	int tfCounter = 0;
 
 	Button createTextArea = new Button();
@@ -39,7 +38,6 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 	int bCounter = 0;
 	
 	Button submit = new Button();
-	//Hello
 	
 	Pane firstPane = new Pane();
 	
@@ -66,12 +64,12 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 	
 	public void handle(ActionEvent e) {
 		if(e.getSource().equals(createTextField)) {
-			tfArray[tfCounter] = new TextField();
-			tfArray[tfCounter].setOnMousePressed(nodeOnMousePressedHandler);
-			tfArray[tfCounter].setOnMouseDragged(nodeOnMouseDraggedHandler);
-			tfArray[tfCounter].setLayoutX(250);
-			tfArray[tfCounter].setLayoutY(250);
-			firstPane.getChildren().add(tfArray[tfCounter]);
+			tfArray.add(new TextField());
+			tfArray.get(tfCounter).setOnMousePressed(nodeOnMousePressedHandler);
+			tfArray.get(tfCounter).setOnMouseDragged(nodeOnMouseDraggedHandler);
+			tfArray.get(tfCounter).setLayoutX(250);
+			tfArray.get(tfCounter).setLayoutY(250);
+			firstPane.getChildren().add(tfArray.get(tfCounter));
 			tfCounter++;
 		}
 		if(e.getSource().equals(createTextArea)) {
@@ -95,14 +93,14 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 		if(e.getSource().equals(submit)) {
 			for(TextField a : tfArray) {
 				int counter = 0;
-				tfXCoordinates[counter] = a.getLayoutX();
-				tfYCoordinates[counter] = a.getLayoutY();
+				tfXCoordinates.add(a.getLayoutX());
+				tfYCoordinates.add(a.getLayoutY());
 				counter++;
 			}
 			for(Button b : bArray) {
 				int counter = 0;
-				bXCoordinates[counter] = b.getLayoutX();
-				bYCoordinates[counter] = b.getLayoutY();
+				//bXCoordinates[counter] = b.getLayoutX();
+				//bYCoordinates[counter] = b.getLayoutY();
 				counter++;
 			}
 			generateCode();
@@ -110,13 +108,14 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 	}
 	public void generateCode() {
 		for(TextField a : tfArray) {
+			int counter = 0;
 			System.out.println("TextField " + "name " + " = new TextField();"); //replace name with a variable name that makes sense later
-			double x = a.getLayoutX();
-			double y = a.getLayoutY();
+			double x = tfXCoordinates.get(counter);
+			double y = tfYCoordinates.get(counter);
 			Double.toString(x);
 			Double.toString(y);
-			System.out.println("name.setLayoutX(\""+ x + "\");");
-			System.out.println("name.setLayoutY(\""+ y + "\");");
+			System.out.println("name.setLayoutX("+ (int)x + ");");
+			System.out.println("name.setLayoutY("+ (int)y + ");");
 		}
 	}
 	EventHandler<MouseEvent> nodeOnMousePressedHandler = new EventHandler<MouseEvent>() {
