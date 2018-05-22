@@ -2,6 +2,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.scene.Node;
@@ -20,8 +21,10 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 	double orgSceneX, orgSceneY;
 	double orgTranslateX, orgTranslateY;
 	
+	List<String> tfNames = new ArrayList<String>();
 	List<Double> tfXCoordinates = new ArrayList<Double>();
 	List<Double> tfYCoordinates = new ArrayList<Double>();
+	List<String> bNames = new ArrayList<String>();
 	List<Double> bXCoordinates = new ArrayList<Double>();
 	List<Double> bYCoordinates = new ArrayList<Double>();
 	
@@ -34,9 +37,12 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 	int taCounter = 0;
 	
 	Button createButton = new Button();
-	//Button[] bArray = new Button[10];
 	List<Button> bArray = new ArrayList<Button>();
 	int bCounter = 0;
+	
+	Button createLabel = new Button();
+	List<Label> lArray = new ArrayList<Label>();
+	int lCounter = 0;
 	
 	Button submit = new Button();
 	
@@ -49,9 +55,13 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 		firstStage.setTitle("GUI Maker");
 		firstStage.show();
 		Label toolLabel = new Label("Tools:   ");
+		//Label trash = new Label("Trash");
+		//trash.setFont(Font.font("Times New Roman", 20));
+		//trash.setLayoutX(425);
+		//trash.setLayoutY(25);
 		toolLabel.setFont(Font.font("Times New Roman", 16));
 		HBox toolBar = new HBox();
-		toolBar.getChildren().addAll(toolLabel, createTextField, createButton,  createTextArea, submit);
+		toolBar.getChildren().addAll(toolLabel, createTextField, createButton,  createTextArea, createLabel, submit);
 		firstPane.getChildren().add(toolBar);
 		submit.setText("Create");
 		submit.setOnAction(this);
@@ -61,11 +71,17 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 		createTextField.setOnAction(this);
 		createButton.setText("B");
 		createButton.setOnAction(this);
+		createLabel.setText("L");
 	}
 	
 	public void handle(ActionEvent e) {
 		if(e.getSource().equals(createTextField)) {
 			tfArray.add(new TextField());
+			TextInputDialog tfDialog = new TextInputDialog();
+			tfDialog.setTitle("Nameth your node");
+			tfDialog.setContentText("Nameth here: ");
+			Optional<String> result = tfDialog.showAndWait();
+			result.ifPresent(name -> tfNames.add(name));
 			tfArray.get(tfCounter).setOnMousePressed(nodeOnMousePressedHandler);
 			tfArray.get(tfCounter).setOnMouseDragged(nodeOnMouseDraggedHandler);
 			tfArray.get(tfCounter).setLayoutX(250);
@@ -83,12 +99,12 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 			taCounter++;
 		}
 		if(e.getSource().equals(createButton)) {
-			/*bArray[bCounter] = new Button();
-			bArray[bCounter].setOnMousePressed(nodeOnMousePressedHandler);
-			bArray[bCounter].setOnMouseDragged(nodeOnMouseDraggedHandler);
-			bArray[bCounter].setLayoutX(250);
-			bArray[bCounter].setLayoutY(250);*/
 			bArray.add(new Button());
+			TextInputDialog bDialog = new TextInputDialog();
+			bDialog.setTitle("Nameth your node");
+			bDialog.setContentText("Nameth here: ");
+			Optional<String> result = bDialog.showAndWait();
+			result.ifPresent(name -> bNames.add(name));
 			bArray.get(bCounter).setOnMousePressed(nodeOnMousePressedHandler);
 			bArray.get(bCounter).setOnMouseDragged(nodeOnMouseDraggedHandler);
 			bArray.get(bCounter).setLayoutX(250);
@@ -113,23 +129,25 @@ public class Drop extends Application implements EventHandler<ActionEvent>{
 		int buttonCount = 0;
 		int textAreaCount = 0;
 		for(TextField a : tfArray) {
-			System.out.println("TextField " + "name " + " = new TextField();"); //replace name with a variable name that makes sense later
+			String name = tfNames.get(textFieldCount);
+			System.out.println("TextField " + name + " = new TextField();"); //replace name with a variable name that makes sense later
 			double x = tfXCoordinates.get(textFieldCount);
 			double y = tfYCoordinates.get(textFieldCount);
 			Double.toString(x);
 			Double.toString(y);
-			System.out.println("name.setLayoutX("+ (int)x + ");");
-			System.out.println("name.setLayoutY("+ (int)y + ");");
+			System.out.println(name + ".setLayoutX("+ (int)x + ");");
+			System.out.println(name + ".setLayoutY("+ (int)y + ");");
 			textFieldCount++;
 		}
 		for(Button b : bArray) {
-			System.out.println("Button " + "name " + " = new Button();"); //replace name with variable names from user
+			String name = bNames.get(buttonCount);
+			System.out.println("Button " + name + " = new Button();"); //replace name with variable names from user
 			double x = bXCoordinates.get(buttonCount);
 			double y = bYCoordinates.get(buttonCount);
 			Double.toString(x);
 			Double.toString(y);
-			System.out.println("name"+ ".setLayoutX(" + (int)x +");");
-			System.out.println("name"+ ".setLayoutY(" + (int)y +");");
+			System.out.println(name+ ".setLayoutX(" + (int)x +");");
+			System.out.println(name+ ".setLayoutY(" + (int)y +");");
 			buttonCount++;
 		}
 	}
